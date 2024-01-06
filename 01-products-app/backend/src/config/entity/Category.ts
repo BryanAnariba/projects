@@ -25,7 +25,6 @@ export class Category {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  //* 1:m
   @OneToMany(() => Product, (product) => product.category)
   products: Product[]
 

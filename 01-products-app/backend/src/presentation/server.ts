@@ -28,6 +28,7 @@ export class Server {
     this.app.use(express.urlencoded({extended: true}));
 
     //* Routes
+    this.app.use('/api', this.routes);
 
     //* SPA
     this.app.get('*', (req, res) => {
