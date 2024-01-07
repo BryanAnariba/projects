@@ -1,24 +1,43 @@
 import { AppDataSource } from "../../config/data-source";
 import { Product } from "../../config/entity";
 import { CustomError } from "../../domain";
-import { CreateProductDto, UpdateProductDto } from "../../domain/dtos";
+import { CreateProductDto, PaginationDto, UpdateProductDto } from "../../domain/dtos";
 import { CategoryService } from "./categories.service";
 
 export class ProductService {
 
   constructor() {}
 
-  public async getProducts() {
+  public async getProducts(paginationDto: PaginationDto) {
     const productRepository = AppDataSource.getRepository(Product);
-    const products = await productRepository.find({
-      where: {
-        deletedAt: null,
-      },
-      relations: {
-        category: true,
-      }
-    });
-    return products;
+
+    const [products, totalProducts] = await Promise.all(
+      [
+        productRepository.find({
+          where: {
+            deletedAt: null,
+          },
+          relations: {
+            category: true,
+          },
+          skip: (paginationDto.page - 1) * paginationDto.limit,
+          take: paginationDto.limit,
+        }),
+        productRepository.countBy({
+          deletedAt: null,
+        }),
+      ]
+    );
+
+    return {
+      page: paginationDto.page,
+      limit: paginationDto.limit,
+      previous: (paginationDto.page - 1 > 0 ? `/api/products?page=${paginationDto.page - 1}&limit=${ paginationDto.limit }` : null),
+      current: `/api/products?page${paginationDto.page}&limit=${paginationDto.limit}`,
+      next: `/api/products?page=${paginationDto.page + 1}&limit=${paginationDto.limit}`,
+      totalProducts: totalProducts,
+      products: products,
+    };
   }
 
   public async getProduct(productId: number) {
