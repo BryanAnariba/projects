@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   database: envs.POSTGRES_DB,
   synchronize: false,
   migrationsRun: true,
-  logging: false,
+  logging: true,
   entities: [
     Category, 
     Product

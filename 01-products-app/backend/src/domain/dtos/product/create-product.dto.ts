@@ -3,11 +3,12 @@ export class CreateProductDto {
   constructor(
     public readonly name: string,
     public readonly description: string,
-    public readonly isAvaliable: boolean
+    public readonly isAvaliable: boolean,
+    public readonly categoryId: number
   ) {}
 
   public static create(object: {[key: string]: any}): [string?, CreateProductDto?] {
-    const {name, description, isAvaliable} = object;
+    const {name, description, isAvaliable, categoryId} = object;
 
     if(!name || name.trim().length === 0) {
       return ['Name is required', undefined];
@@ -21,7 +22,11 @@ export class CreateProductDto {
       return ['Avaliable must be a bool', undefined];
     }
 
-    return [undefined, new CreateProductDto(name, description, isAvaliable)];
+    if (!categoryId) {
+      return ['Category is required', undefined];
+    }
+
+    return [undefined, new CreateProductDto(name, description, isAvaliable, categoryId)];
   }
   
 }
