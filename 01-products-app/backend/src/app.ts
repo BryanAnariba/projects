@@ -9,10 +9,6 @@ import { Server } from "./presentation/server";
 })()
 
 async function main() {
-  //* Please read this
-  //* Create Migration: npx typeorm-ts-node-commonjs migration:generate ./src/config/migration/create-category-tbl -d ./src/config/data-source.ts
-  //* Run Migration: npx typeorm-ts-node-commonjs migration:run -d ./src/config/data-source.ts
-
   try {
     const server = new Server({port: envs.PORT, public_path: envs.PUBLIC_PATH, routes: AppRoutes.routes});
     await server.startServer();
