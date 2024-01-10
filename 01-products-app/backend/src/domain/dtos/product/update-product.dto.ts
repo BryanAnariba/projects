@@ -22,7 +22,7 @@ export class UpdateProductDto {
       return ['Avaiable must be a bool', undefined];
     }
 
-    console.log(typeof categoryId, '-', typeof categoryId != 'number', '-', typeof categoryId != 'bigint');
+    // console.log(typeof categoryId, '-', typeof categoryId != 'number', '-', typeof categoryId != 'bigint');
     if (categoryId) {
       if ((typeof categoryId !== 'number')) {
         return ['Category id must be a number', undefined];

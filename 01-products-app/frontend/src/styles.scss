@@ -1,1 +1,81 @@
-/* You can add global styles to this file, and also import other style files */
+// Basics
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.centering {
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+}
+
+// Card Styles
+.card {
+  padding: 1rem;
+  -webkit-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 5px -8px rgba(0,0,0,0.75);
+}
+
+.between {
+  display: flex;
+  justify-content: space-between;
+}
+
+// Break Points lists
+.container {
+  margin: 2rem 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1.3rem;
+}
+
+@media only screen and (max-width: 599px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (min-width: 768) and (max-width: 991px) {
+  .grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// Spinner
+.spinner-container {
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  height: 80vh;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.form-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+}
+
+.text-danger {
+  color: rgba(255, 0, 0, 0.759);
+}
