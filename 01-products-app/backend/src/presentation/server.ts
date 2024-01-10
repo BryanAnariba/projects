@@ -1,5 +1,6 @@
 import path from 'node:path';
 import express, { Application, Router } from "express";
+import cors from 'cors';
 
 interface ServerOptions { 
   port: number;
@@ -24,6 +25,7 @@ export class Server {
 
   async startServer(): Promise<void> {
     //* Middlewares
+    this.app.use(cors({origin: 'http://localhost:4200'}));
     this.app.use(express.json());
     this.app.use(express.urlencoded({extended: true}));
 

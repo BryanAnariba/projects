@@ -13,6 +13,9 @@ export class CategoryService {
           deletedAt: null,
           isActive: true,
         },
+        order: {
+          createdAt: 'DESC'
+        },
         skip: (paginationDto.page - 1) * paginationDto.limit,
         take: paginationDto.limit,
       }),
