@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+
+postgres/
+node_modules/
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
