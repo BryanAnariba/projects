@@ -22,7 +22,7 @@ export class Category {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  // Una categoria puede estar en muchos productos
+  // UNA CATEGORYA TIENE MUCHOS PRODUCTOS
   @OneToMany(() => Product, (product) => product.category)
   products: Product[];
 }

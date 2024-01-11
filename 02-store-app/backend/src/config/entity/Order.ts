@@ -1,7 +1,21 @@
-import { CreateDateColumn, DeleteDateColumn, Entity, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from "./User";
+import { Product } from "./Product";
 
 @Entity()
 export class Order {
+
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({default: true})
+  isActive: boolean;
+
+  @Column({default: 0})
+  subTotal: number;
+
+  @Column({default: 0})
+  total: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -11,4 +25,12 @@ export class Order {
 
   @DeleteDateColumn()
   deletedAt: Date;
+  
+  // MUCHAS ORDENES PERTENECEN A UN USUARIO
+  @ManyToOne(() => User, (user) => user.orders)
+  user: User
+
+  @ManyToMany(() => Product)
+  @JoinTable()
+  products: Product[]
 }

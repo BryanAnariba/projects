@@ -2,6 +2,7 @@ import path from "node:path";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { envs } from "./env.var";
+import { Category, Order, Product, User } from "./entity";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
     database: envs.POSTGRES_DB,
     synchronize: false,
     logging: true,
-    entities: [path.resolve('./src/config/entity/*.ts')],
+    entities: [Category, Product, User, Order],
     migrations: [path.resolve('./src/config/migration/*.ts')],
     subscribers: [],
 });
