@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { OrderService } from "../services";
+import { CreateOrderDto, UpdateOrderDto } from "../../domain/dto";
 
 export class OrderController {
 
@@ -14,11 +15,20 @@ export class OrderController {
   }
 
   public createOne = (req: Request, res: Response) => {
-    return res.status(200).json('@Orders-createOne is working');
+    const [error, createOrderDto] = CreateOrderDto.create(req.body);
+    if (error) return res.status(400).json({error: error});
+    
+    return res.status(201).json(createOrderDto);
   }
 
   public editOne = (req: Request, res: Response) => {
-    return res.status(200).json('@Orders-editOne is working');
+    const [error, updateOrderDto] = UpdateOrderDto.update(req.body);
+    if (error) return res.status(400).json({error: error});
+
+    const {orderId} = req.params;
+    if (!orderId) return res.status(400).json({error: 'Order id is required'});
+
+    return res.status(200).json(updateOrderDto);
   }
 
   public deleteOne = (req: Request, res: Response) => {
