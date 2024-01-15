@@ -5,11 +5,12 @@ export class CreateProductDto {
     public readonly description: string,
     public readonly price: number,
     public readonly stock: number,
-    public readonly categoryId: number,
+    public readonly categoryId: string,
+    public readonly image: string,
   ) {}
 
   public static create(object: {[key: string]: any}): [string?, CreateProductDto?] {
-    const {name, description, price, stock, categoryId} = object;
+    const {name, description, price, stock, categoryId, image} = object;
 
     if (!categoryId || categoryId.trim().length === 0) {
       return ['Category is required', undefined];
@@ -39,6 +40,10 @@ export class CreateProductDto {
       return ['Stock must be greater than zero', undefined];
     }
 
-    return [undefined, new CreateProductDto(name, description, price, stock, categoryId)];
+    if (!image) {
+      return ['Images is required', undefined];
+    }
+
+    return [undefined, new CreateProductDto(name, description, price, stock, categoryId, image)];
   }
 }

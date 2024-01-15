@@ -5,7 +5,7 @@ import { Category } from "./Category";
 export class Product {
 
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({length: 100})
   name: string;
@@ -13,10 +13,10 @@ export class Product {
   @Column({length: 255})
   description: string;
 
-  @Column({default: 0})
+  @Column({type: 'decimal', default: 0})
   price: number;
 
-  @Column()
+  @Column({type: 'int'})
   stock: number;
 
   @Column({default: true})
@@ -30,6 +30,9 @@ export class Product {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @Column({type: 'varchar', nullable: true, length: 255})
+  image: string;
 
   // MUCHOS PRODUCTOS PERTENECEN A UNA CATEGORIA
   @ManyToOne(() => Category, (category) => category.products)

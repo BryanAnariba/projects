@@ -1,3 +1,5 @@
+import { CustomError } from "../errors";
+
 interface CategoryEntityOptions {
   id: string;
   name: string;
@@ -9,12 +11,12 @@ interface CategoryEntityOptions {
 
 export class CategoryEntity {
 
-  private readonly id: string;
-  private readonly name: string;
-  private readonly description: string;
-  private readonly createdAt?: Date;
-  private readonly updatedAt?: Date;
-  private readonly deletedAt?: Date;
+  public readonly id: string;
+  public readonly name: string;
+  public readonly description: string;
+  public readonly createdAt?: Date;
+  public readonly updatedAt?: Date;
+  public readonly deletedAt?: Date;
 
   constructor ({id,name,description,createdAt,updatedAt,deletedAt}: CategoryEntityOptions) {
     this.id = id;
@@ -25,8 +27,14 @@ export class CategoryEntity {
     this.deletedAt = deletedAt;
   }
 
-  public static getObjectFromJson(object: {[key: string]: any}): CategoryEntity {
-    const {id,name,description,createdAt,updatedAt,deletedAt} = object;
+  public static getObjectFromJson(json: {[key: string]: any}): CategoryEntity {
+    const {id,name,description,createdAt,updatedAt,deletedAt} = json;
+
+    if (!id) throw CustomError.badRequest('Category Id is required');
+
+    if (!name) throw CustomError.badRequest('Category Name is required');
+
+    if (!description) throw CustomError.badRequest('Category description is required');
 
     return new CategoryEntity({id,name,description,createdAt,updatedAt,deletedAt});
   }

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ProductController } from "./controller";
-import { ProductService } from "../services";
+import { CategoryService, ProductService } from "../services";
+import { upload } from "../../config/multer";
 
 export class ProductsRoutes {
 
@@ -12,8 +13,18 @@ export class ProductsRoutes {
     router
     .get('', productController.getAll)
     .get('/:productId', productController.getOne)
-    .post('', productController.createOne)
-    .put('/:productId', productController.editOne)
+    .post('', 
+    [
+      upload.single('image')
+    ], 
+    productController.createOne)
+    .put(
+      '/:productId', 
+      [
+        upload.single('image')
+      ],
+      productController.editOne
+    )
     .delete('/:productId', productController.deleteOne);
     return router;
   }
