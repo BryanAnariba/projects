@@ -58,9 +58,9 @@ export class ProductService {
       totalProducts,
       limit: paginationDto.limit,
       page: paginationDto.page,
-      previusPage: (paginationDto.page - 1) > 0 ? `/api/products?page=${paginationDto.page-1}&limit=${paginationDto.limit}` : null,
-      currentPage: `/api/products?page=${paginationDto.page}&limit=${paginationDto.limit}`,
-      nextPage: `/api/products?page=${paginationDto.page + 1}&limit=${paginationDto.limit}`,
+      previusPage: (paginationDto.page - 1) > 0 ? `/api/v1/products?page=${paginationDto.page-1}&limit=${paginationDto.limit}` : null,
+      currentPage: `/api/v1/products?page=${paginationDto.page}&limit=${paginationDto.limit}`,
+      nextPage: `/api/v1/products?page=${paginationDto.page + 1}&limit=${paginationDto.limit}`,
       products,
     }
   }
@@ -90,7 +90,6 @@ export class ProductService {
     ) {
       fs.unlinkSync(`${__dirname}../../../../${product.image}`);
     }
-    console.log(updateProductDto.image)
     const updated = productRepository.save({
       ...product,
       name: updateProductDto.name,

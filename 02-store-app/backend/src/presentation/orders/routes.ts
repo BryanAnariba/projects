@@ -10,7 +10,7 @@ export class OrdersRoutes {
     const orderController = new OrderController(orderService);
 
     router
-      .get('', orderController.getAll)
+      .get('/user/:userId', orderController.getAll)
       .get('/:orderId', orderController.getOne)
       .post('', orderController.createOne)
       .put('/:orderId', orderController.editOne)

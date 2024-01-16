@@ -11,10 +11,10 @@ export class Order {
   @Column({default: true})
   isActive: boolean;
 
-  @Column({default: 0})
+  @Column({default: 0, type: 'decimal' })
   subTotal: number;
 
-  @Column({default: 0})
+  @Column({default: 0, type: 'decimal'})
   total: number;
 
   @CreateDateColumn()

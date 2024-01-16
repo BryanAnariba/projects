@@ -5,7 +5,7 @@ import { Order } from './Order';
 export class User {
   
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
   name: string;

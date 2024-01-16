@@ -11,7 +11,7 @@ export class CategoryService {
   public async createCategory (createCategoryDto: CreateCategoryDto): Promise<CategoryEntity> {
     const categoryRespository = AppDataSource.getRepository(Category);
     const category = await categoryRespository.findBy({name: createCategoryDto.name});
-    if (!category) throw new Error('Category Already Exists');
+    if (category) throw new Error('Category Already Exists');
     const saved = await categoryRespository.save(createCategoryDto);
     return CategoryEntity.getObjectFromJson(saved);
   }
@@ -31,9 +31,9 @@ export class CategoryService {
 
     return {
       totalCategories,
-      previusPage: (paginationDto.page - 1 > 0) ? `/api/categories?page=${paginationDto.page - 1}&limit=${paginationDto.limit}` : null,
-      currentPage: `/api/categories?page=${paginationDto.page}&limit=${paginationDto.limit}`,
-      nextPage: `/api/categories?page=${paginationDto.page + 1}&limit=${paginationDto.limit}`,
+      previusPage: (paginationDto.page - 1 > 0) ? `/api/v1/categories?page=${paginationDto.page - 1}&limit=${paginationDto.limit}` : null,
+      currentPage: `/api/v1/categories?page=${paginationDto.page}&limit=${paginationDto.limit}`,
+      nextPage: `/api/v1/categories?page=${paginationDto.page + 1}&limit=${paginationDto.limit}`,
       limit: paginationDto.limit,
       page: paginationDto.page,
       categories: categories,
