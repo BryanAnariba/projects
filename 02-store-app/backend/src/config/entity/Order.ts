@@ -1,6 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./User";
-import { Product } from "./Product";
+import { ProductByOrder } from "./ProductByOrder";
 
 @Entity()
 export class Order {
@@ -30,7 +30,7 @@ export class Order {
   @ManyToOne(() => User, (user) => user.orders)
   user: User
 
-  @ManyToMany(() => Product)
-  @JoinTable()
-  products: Product[]
+  // ESTA RELACION VA PARA UNA TABLA INTERMEDIA
+  @OneToMany(() => ProductByOrder, productsByOrder => productsByOrder.order)
+  productsByOrder: ProductByOrder[];
 }

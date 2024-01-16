@@ -1,18 +1,25 @@
-// import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "./Product";
+import { Order } from "./Order";
 
-// @Entity()
-// export class ProductByOrder {
-//   @PrimaryGeneratedColumn('uuid')
-//   id: string;
+@Entity()
+export class ProductByOrder {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-//   @Column()
-//   extraField: string;
+  @Column({type: 'int'})
+  quantityProduct: number;
 
-//   @ManyToOne(() => EntityA, (entityA) => entityA.entityBs)
-//   @JoinColumn({ name: 'entityAId' })
-//   entityA: EntityA;
+  @Column({type: 'decimal'})
+  productValue: number;
 
-//   @ManyToOne(() => EntityB, (entityB) => entityB.entityAs)
-//   @JoinColumn({ name: 'entityBId' })
-//   entityB: EntityB;
-// }
+
+  // ESTA ES LA TABLA INTERMEDIA
+  // Order
+  @ManyToOne(() => Order, (order) => order.productsByOrder)
+  order: Order;
+
+  // Product
+  @ManyToOne(() => Product, (product) => product.productsByOrder)
+  product: Product;
+}

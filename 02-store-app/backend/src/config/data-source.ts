@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { envs } from "./env.var";
 import { Category, Order, Product, User } from "./entity";
+import { ProductByOrder } from "./entity/ProductByOrder";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
     database: envs.POSTGRES_DB,
     synchronize: false,
     logging: true,
-    entities: [Category, Product, User, Order],
+    entities: [Category, Product, User, Order, ProductByOrder],
     migrations: [path.resolve('./src/config/migration/*.ts')],
     subscribers: [],
 });

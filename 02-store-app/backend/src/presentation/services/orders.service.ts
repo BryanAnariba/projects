@@ -3,44 +3,56 @@ import { AppDataSource } from "../../config";
 import { Order, Product, User } from "../../config/entity";
 import { CreateOrderDto, PaginationDto } from "../../domain/dto";
 import { CustomError } from "../../domain/errors";
+import { ProductByOrder } from "../../config/entity/ProductByOrder";
 
 export class OrderService {
 
   constructor() {}
 
   public async createOrder (createOrderDto: CreateOrderDto) {
+    let subtotal: number = 0;
+    let total: number = 0;
     const orderRepository = AppDataSource.getRepository(Order);
     const userRepository = AppDataSource.getRepository(User);
     const productRepository = AppDataSource.getRepository(Product);
+    const productByOrderRepository = AppDataSource.getRepository(ProductByOrder);
 
     const [user, products] = await Promise.all([
       userRepository.findOneBy({id: createOrderDto.userId}),
       productRepository.findBy({id: In(createOrderDto.products.map(product => product.productId))}),
     ]);
-
+    // TODO: validaciones, aun falta pulir esto, pero pienso que a este punto cumple lo minimo necesario, abria que testear
     products.forEach(p => {
-      if (p.stock <= 0) throw CustomError.badRequest('Empty Stock of product ' + p.name);
+      const productOfdto = createOrderDto.products.find(prod => prod.productId === p.id);
+      if ((p.stock - productOfdto.quantityProduct) < 0) throw CustomError.badRequest(`${p.name} quantity in stock is less than the quantity of do you want, stock=${p.stock}, need=${productOfdto.quantityProduct}`);
     });
-
-    let subtotal: number = 0;
-    let total: number = 0;
-
+    
+    // TODO: modificamos el stock
     createOrderDto.products.forEach(async product => {
-      subtotal += product.price * product.quantity;
-      total += product.price * product.quantity;
+      subtotal += product.productValue * product.quantityProduct;
+      total += product.productValue * product.quantityProduct;
       const p = await productRepository.findOneBy({id: product.productId});
-      p.stock = p.stock - product.quantity;
-      //console.log({p, newStock: p.stock})
+      p.stock = p.stock - product.quantityProduct;
       await productRepository.save({...p});
     });
-
-    return await orderRepository.save({
+    // TODO: creamos la orden
+    const order = await orderRepository.save({
       subTotal: subtotal,
       total: total + (total * 0.11), // SUPONGAMOS EL ESTANDAR 11% DE TAX O ISV ESTO PUEDE VARIAR DEL PAIS
       isActive: true,
       user: user,
-      products: products,
     });
+    // TODO: creamos los productos por orden
+    createOrderDto.products.map(async(p) => {
+      await productByOrderRepository.save({
+        order: {id: order.id}, 
+        product: {id: p.productId}, 
+        productValue: p.productValue, 
+        quantityProduct: p.quantityProduct
+      });
+    });
+
+    return order;
   }
 
   public async getOrders (paginationDto: PaginationDto, userId: string) {
@@ -69,7 +81,7 @@ export class OrderService {
         skip: (paginationDto.page - 1) * paginationDto.limit,
         take: paginationDto.limit,
         relations: {
-          products: true,
+          productsByOrder: true,
           user: true
         },
       }),

@@ -5,9 +5,8 @@ export interface Order {
 
 export interface Product {
   productId: string;
-  quantity:  number;
-  price:     number;
-  stock:     number;
+  quantityProduct:  number;
+  productValue:     number;
 }
 
 export class CreateOrderDto {

@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Category } from "./Category";
+import { ProductByOrder } from "./ProductByOrder";
 
 @Entity()
 export class Product {
@@ -37,5 +38,9 @@ export class Product {
   // MUCHOS PRODUCTOS PERTENECEN A UNA CATEGORIA
   @ManyToOne(() => Category, (category) => category.products)
   category: Category
+
+  // ESTA RELACION VA PARA UNA TABLA INTERMEDIA
+  @OneToMany(() => ProductByOrder, productsByOrder => productsByOrder.product)
+  productsByOrder: ProductByOrder[]
 
 }
