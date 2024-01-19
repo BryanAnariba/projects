@@ -32,6 +32,9 @@ export class Server {
     //* Routes
     this.app.use('/api/v1', this.appRoutes);
 
+    //* Static Files
+    this.app.use('/uploads', express.static(__dirname + '../../../uploads'));
+
     //* SPA
     this.app.get('*', (req, res) => {
       const staticFilesIndexPath = path.join(`${__dirname}../../../${this.static_files_path}/index.html`);

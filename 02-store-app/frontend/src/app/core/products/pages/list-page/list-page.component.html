@@ -1,5 +1,5 @@
 <div class="card-top">
-  <div class="container d-flex">
+  <div class="container d-flex contenedor-productos">
     <div class="item">
       <a>
         <img src="assets/img/products.png" class="product-item" alt="All Products">
@@ -28,16 +28,21 @@
 </div>
 <hr>
 
-<div class="alert alert-primary loading" role="alert">
-  <div class="spinner-grow text-primary" role="status">
-    <span class="sr-only"></span>
+<div class="row" *ngIf="!isLoading else loading">
+  <div class="col" *ngFor="let product of products; let i = index">
+    <div class="card">
+        <img [src]="['http://localhost:3500/'+product.image]" [alt]="product.name">
+        <h5>{{product.name}}</h5>
+    </div>
   </div>
-  <span>Loading...</span>
 </div>
 
-<div class="row">
-  <div class="card col-md-3">
-    <img src="" alt="">
-    <h5></h5>
-  </div>
-</div>
+<button class="button" *ngIf="showButton" (click)="resetScroll()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+    <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+  </svg>
+</button>
+
+<ng-template #loading>
+  <shared-loading></shared-loading>
+</ng-template>

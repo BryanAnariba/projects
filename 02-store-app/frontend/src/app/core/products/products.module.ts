@@ -5,6 +5,7 @@ import { ProductsRoutingModule } from './products-routing.module';
 import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
 import { ListPageComponent } from './pages/list-page/list-page.component';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ProductPageComponent } from './pages/product-page/product-page.componen
   ],
   imports: [
     CommonModule,
-    ProductsRoutingModule
+    ProductsRoutingModule,
+    SharedModule
   ]
 })
 export class ProductsModule { }
