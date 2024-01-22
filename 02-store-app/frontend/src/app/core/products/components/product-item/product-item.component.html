@@ -1,0 +1,34 @@
+<div>
+  <form class="card p-3 animate__animated animate__fadeInDown" [formGroup]="cartForm" (submit)="addToCart(product)">
+      <div class="card-header">
+        <shared-lazy-image-loading [url]="product.image" [alt]="product.name"></shared-lazy-image-loading>
+      </div>
+      <h5>
+        {{product.name}}
+      </h5>
+      <p>
+        {{product.description}}
+      </p>
+      <p>
+        <strong>Price: </strong>
+        ${{product.price}}
+      </p>
+      <p class="d-flex justify-content-between gap-2 align-items-center">
+        <strong>Quantity: </strong>
+        <input 
+          type="number" 
+          class="form-control"
+          formControlName="quantity"
+          min="1"
+        />
+      </p>
+      <span class="form-text text-danger m-2" *ngIf="isValidField('quantity')">
+        {{getFieldError('quantity')}}
+      </span>
+      <button 
+        class="btn btn-primary"
+      >
+        Add to cart
+      </button>
+  </form>
+</div>

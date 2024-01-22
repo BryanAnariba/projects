@@ -1,0 +1,85 @@
+<ng-container *ngIf="productsItemCart.length > 0">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <h3 class="text-white text-center">
+        Products that do you want to buy!
+      </h3>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-hover">
+        <thead class="bg-dark">
+          <tr>
+            <th>Sr.No</th>
+            <th>Product Name</th>
+            <th>Product Image</th>
+            <th>Product Description</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center" *ngFor="let productItemCart of productsItemCart">
+            <td>{{productItemCart.id}}</td>
+            <td>{{productItemCart.name}}</td>
+            <td><img [src]="['http://localhost:3500/' + productItemCart.image]" [alt]="productItemCart.name" width="50" height="50"></td>
+            <td>{{productItemCart.description}}</td>
+            <td>{{productItemCart.price | currency}}</td>
+            <td>{{productItemCart.quantity}}</td>
+            <td>{{productItemCart.total | currency}}</td>
+            <td>
+              <button class="btn btn-small btn-outline-danger" (click)="deleteItemFronCart(productItemCart)">
+                <img src="./assets/img/trash.png" alt="deleted item" width="24">
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot class="text-center p-3">
+          <td><strong>Total: </strong></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="result">{{totalAllProducts | currency}}</td>
+        </tfoot>
+      </table>
+      <div class="card mt-3">
+        <div class="card-body">
+          <div class="container">
+            <div class="row mx-auto text-center">
+              <div class="col">
+                <button class="btn btn-warning" (click)="onResetCart()">Reset Cart</button>
+              </div>
+              <div class="col">
+                <button class="btn btn-info" routerLink="/products/list">Go To Products</button>
+              </div>
+              <div class="col">
+                <button class="btn btn-success" (click)="onPayNow()">Pay Order Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="productsItemCart.length === 0">
+  <div class="card p-5">
+    <div class="card-title">
+      <h5 class="card-title">
+        My Cart
+      </h5>
+      <hr class="text-primary">
+    </div>
+    <div class="mx-auto">
+      <img src="./assets/img/shopping-cart.png" alt="">
+      <h4>Your card is empty!</h4>
+      <h6>Add item to it now</h6>
+      <button class="btn btn-primary" routerLink="/products/list">Shop Now</button>
+    </div>
+    <hr class="text-primary">
+  </div>
+</ng-container>

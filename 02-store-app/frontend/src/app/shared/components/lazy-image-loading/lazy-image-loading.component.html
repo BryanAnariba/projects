@@ -1,0 +1,18 @@
+<div class="flex justify-content-center">
+  <img 
+    [src]="'http://localhost:3500/' + url" 
+    [alt]="alt"
+    class="card-img-top" 
+    (load)="onLoad()"
+    [ngStyle]="{display: hasLoaded ? '' : 'none'}"
+  >
+
+  <img 
+    *ngIf="!hasLoaded"
+    src="assets/img/loader.gif" 
+    alt="Loading Img" 
+    class="mt-3 img-fluid"
+    width="200"
+    height="200"
+  >
+</div>
