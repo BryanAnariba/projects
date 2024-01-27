@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CartService } from '../../../core/cart/services/cart.service';
+import { UserService } from '../../../core/users/services/user.service';
+import { User } from '../../../core/users/interfaces/user.interfaces';
 
 @Component({
   selector: 'shared-header',
@@ -9,12 +10,21 @@ import { CartService } from '../../../core/cart/services/cart.service';
 })
 export class HeaderComponent implements OnInit {
   public totalProductsInCart: number = 0;
+  public users: User[] = [];
 
   constructor (
-    private cartService: CartService
+    private cartService: CartService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
+    this.userService.getUser()
+      .subscribe({
+        next: (users) => {
+          this.users = users;
+        }
+      });
+
     this.cartService.getProducts()
       .subscribe({
         next: (products) => {
@@ -23,7 +33,7 @@ export class HeaderComponent implements OnInit {
         }
       });
   }
-  
+
   public onSearch(value: string): void {
     console.log({value});
   }

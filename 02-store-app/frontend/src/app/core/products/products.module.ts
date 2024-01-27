@@ -10,7 +10,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ProductItemComponent } from './components/product-item/product-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
 @NgModule({
   declarations: [
     LayoutPageComponent,

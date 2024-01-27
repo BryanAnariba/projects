@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { ProductItemCart } from '../../interfaces/cart.interfaces';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cart-page',
@@ -11,7 +12,8 @@ export class CartPageComponent implements OnInit {
   public productsItemCart: ProductItemCart[] = []
 
   constructor (
-    private cartService: CartService
+    private cartService: CartService,
+    private toastService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -37,10 +39,22 @@ export class CartPageComponent implements OnInit {
   }
 
   public onPayNow(): void {
-    console.log('Soon!');
+    //console.log('Soon!');
+    this.showMessage('Order Created!', 'success')
   }
 
   public deleteItemFronCart(product: ProductItemCart) {
     this.cartService.removeProductFromCartProductsItem(product);
+  }
+
+  showMessage(message: string, type: string) {
+    switch (type) {
+      case 'success':
+        return this.toastService.success('Success!', message);
+      case 'error':
+        return this.toastService.error('Error!', message);
+      default:
+        return;
+    }
   }
 }

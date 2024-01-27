@@ -24,6 +24,11 @@ export class CategoryController {
       .catch(error => this.handleError(error, res));
   }
 
+  public getByName = (req: Request, res: Response) => {
+    const {query} = req.query;
+    return res.status(200).json(query);
+  }
+
   public getOne = (req: Request, res: Response) => {
     const {categoryId} = req.params;
     if (!categoryId) return res.status(400).json({error: 'Category is required and must be number'});

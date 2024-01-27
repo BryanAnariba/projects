@@ -6,6 +6,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
 import { LoadingComponent } from './components/loading/loading.component';
 import { LazyImageLoadingComponent } from './components/lazy-image-loading/lazy-image-loading.component';
 import { RouterModule } from '@angular/router';
+import { SearchByComponent } from './components/search-by/search-by.component';
 
 
 
@@ -15,7 +16,8 @@ import { RouterModule } from '@angular/router';
     FooterComponent,
     NotFoundPageComponent,
     LoadingComponent,
-    LazyImageLoadingComponent
+    LazyImageLoadingComponent,
+    SearchByComponent
   ],
   imports: [
     CommonModule,
@@ -25,6 +27,7 @@ import { RouterModule } from '@angular/router';
     HeaderComponent,
     LoadingComponent,
     LazyImageLoadingComponent,
+    SearchByComponent,
   ]
 })
 export class SharedModule { }

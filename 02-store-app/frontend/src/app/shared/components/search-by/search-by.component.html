@@ -1,0 +1,11 @@
+<div class="form-floating mb-3">
+  <input
+    type="text"
+    name="search-by"
+    id="search-by"
+    class="form-control"
+    #txtSearchBy
+    (keyup)="onSearchBy(txtSearchBy.value)"
+  >
+  <label for="search-by">{{searchByLabel}}</label>
+</div>

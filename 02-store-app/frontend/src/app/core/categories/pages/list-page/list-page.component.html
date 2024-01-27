@@ -1,0 +1,40 @@
+<div class="row">
+  <shared-app-search-by [searchByLabel]="label"></shared-app-search-by>
+</div>
+
+<div class="card p-3">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <td>#No. </td>
+        <td>Name</td>
+        <td>Description</td>
+        <td>Created At</td>
+      </tr>
+    </thead>
+    <tbody *ngFor="let category of categories">
+      <tr>
+        <td>{{category.id}}</td>
+        <td>{{category.name}}</td>
+        <td>{{category.description}}</td>
+        <td>{{category.createdAt}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="card-footer justify-content-center">
+    <div class="alert alert-primary text-center" role="alert" *ngIf="categories.length === 0">
+      No more results.
+    </div>
+  </div>
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <button class="page-link" href="#" tabindex="-1" [disabled]="previusPage === null" (click)="getPreviusCategories()">Previous</button>
+    </li>
+    <li class="page-item">
+      <button class="page-link cursor-pointer" (click)="getNextCategories()" [disabled]="categories.length === 0">Next</button>
+    </li>
+  </ul>
+</nav>

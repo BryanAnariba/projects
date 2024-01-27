@@ -3,6 +3,7 @@ import { Product } from '../../interfaces/product.interface';
 import { CartService } from '../../../cart/services/cart.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'product-item',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 export class ProductItemComponent implements OnInit {
   @Input()
   product!: Product;
-  
+
   ngOnInit(): void {
     if (!this.product) throw new Error('Product is required');
   }
@@ -21,6 +22,7 @@ export class ProductItemComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private fb: FormBuilder,
+    private toastService: ToastrService
   ) {}
 
   public cartForm: FormGroup = this.fb.group({
@@ -42,7 +44,7 @@ export class ProductItemComponent implements OnInit {
           return 'Quantity is required';
         case 'min':
           return 'Quantity must be greather than zero';
-        default: 
+        default:
           return '';
       }
     }
@@ -56,6 +58,18 @@ export class ProductItemComponent implements OnInit {
   public addToCart (product: Product): void {
     // console.log('Add To Cart: ',  product, this.quantity);
     this.cartService.addToCard(product, this.quantity);
+    this.showMessage('Product Added To Cart', 'success');
     this.router.navigate(['/cart/cart-page']);
+  }
+
+  showMessage(message: string, type: string) {
+    switch (type) {
+      case 'success':
+        return this.toastService.success('Success!', message);
+      case 'error':
+        return this.toastService.error('Error!', message);
+      default:
+        return;
+    }
   }
 }
