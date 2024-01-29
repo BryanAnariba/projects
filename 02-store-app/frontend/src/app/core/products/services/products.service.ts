@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { devEnvironments } from '../../../environments/environments.dev';
 import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
-import { Product, ProductResponse } from '../interfaces/product.interface';
+import { Category, Product, ProductResponse } from '../interfaces/product.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +36,17 @@ export class ProductsService {
           }
         )
       )
+  }
+
+  public createProduct(product: Product): Observable<Category> {
+    const formData = new FormData();
+    formData.append('name', product.name);
+    formData.append('description', product.description);
+    formData.append('price', product.price.toString());
+    formData.append('stock', product.stock.toString());
+    formData.append('image', product.image);
+    formData.append('isAvaliable', 'true');
+    formData.append('categoryId', product.categoryId);
+    return this.httpClient.post<Category>(`${this.apiUrl}/products`, formData);
   }
 }

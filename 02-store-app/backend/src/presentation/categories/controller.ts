@@ -25,8 +25,26 @@ export class CategoryController {
   }
 
   public getByName = (req: Request, res: Response) => {
-    const {query} = req.query;
-    return res.status(200).json(query);
+    const {page, limit} = req.query;
+    const [error, paginationDto] = PaginationDto.create({page: +page, limit: +limit});
+    if (error) return res.status(400).json({error: error});
+
+    if (!req.query.name) {
+      this.categoryService.getCategories(paginationDto)
+      .then(categories => {
+        return res.status(200).json(categories);
+      })
+      .catch(error => this.handleError(error, res));
+    }
+
+    if (req.query.name) {
+      const {name} = req.query;
+      this.categoryService.getCategoriesByName(paginationDto, `${name}`)
+      .then(categories => {
+        return res.status(200).json(categories);
+      })
+      .catch(error => this.handleError(error, res));
+    }
   }
 
   public getOne = (req: Request, res: Response) => {

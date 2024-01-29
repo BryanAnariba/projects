@@ -9,13 +9,15 @@ import { SharedModule } from '../../shared/shared.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ProductItemComponent } from './components/product-item/product-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NewProductPageComponent } from './pages/new-product-page/new-product-page.component';
 
 @NgModule({
   declarations: [
     LayoutPageComponent,
     ListPageComponent,
     ProductPageComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    NewProductPageComponent
   ],
   imports: [
     CommonModule,

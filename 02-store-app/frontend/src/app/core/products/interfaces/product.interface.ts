@@ -15,11 +15,12 @@ export interface Product {
   price:       number;
   stock:       number;
   isActive:    boolean;
-  createdAt:   Date;
-  updatedAt:   Date;
-  deletedAt:   null;
+  createdAt?:   Date;
+  updatedAt?:   Date;
+  deletedAt?:   null;
   image:       string;
   category:    Category;
+  categoryId: string;
 }
 
 export interface Category {

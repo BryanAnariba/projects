@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
-import { ProductItemCart } from '../../interfaces/cart.interfaces';
+import { CartItemList, ProductItemCart } from '../../interfaces/cart.interfaces';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../../../users/services/user.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -14,6 +15,7 @@ export class CartPageComponent implements OnInit {
   constructor (
     private cartService: CartService,
     private toastService: ToastrService,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -39,8 +41,23 @@ export class CartPageComponent implements OnInit {
   }
 
   public onPayNow(): void {
-    //console.log('Soon!');
-    this.showMessage('Order Created!', 'success')
+    if (!this.userService.currentUser) {
+      this.showMessage('Please Select An User!!!', 'error')  
+    } else {
+      const products = this.cartService.products.map(p => ({productId: p.id, quantityProduct: p.quantity, productValue: p.price}));
+      const newOrder = {
+        userId: this.userService.currentUser.id,
+        products: products,
+      } as CartItemList ;
+      //console.log('Products: ', this.cartService.products, ', User', newOrder);
+      this.cartService.createOrder(newOrder)
+      .subscribe({
+        next: (order) => {
+          console.log(order);
+        }
+      })
+      this.showMessage('Order Created!', 'success')
+    }
   }
 
   public deleteItemFronCart(product: ProductItemCart) {

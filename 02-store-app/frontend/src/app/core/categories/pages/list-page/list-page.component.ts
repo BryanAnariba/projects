@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../../services/category.service';
-import { Category } from '../../interfaces/category.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-page',
@@ -9,16 +9,20 @@ import { Category } from '../../interfaces/category.interface';
 })
 export class ListPageComponent implements OnInit {
   public label: string = 'Search by Category Name:';
-  public categories: Category[] = [];
   private limit: number = 10;
   private page: number = 1;
-  public previusPage: string | null = null;
-  public currentPage?: string;
-  public nextPage?: string = '';
-  private totalCategories: number = 0;
+
+  get previusPage () {
+    return this.categoryService.currentPreviusPage;
+  } 
+
+  get categories () {
+    return this.categoryService.currentCategoryList;
+  }
 
   constructor (
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private toastService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -26,23 +30,13 @@ export class ListPageComponent implements OnInit {
   }
 
   public getCategories () {
+    //console.log({page: this.categoryService.currentPage, limit: this.categoryService.currentLimit, nextOrPrev: this.nextOrPrevius})
     this.categoryService.getCategories(this.page, this.limit)
-      .subscribe(
-        categoryResponse => {
-          this.limit = categoryResponse.limit;
-          this.page = categoryResponse.page;
-          this.totalCategories = categoryResponse.totalCategories;
-          this.categories = categoryResponse.categories;
-          this.previusPage = categoryResponse.previusPage;
-          console.log({
-            previusPage: this.previusPage,
-            limit: this.limit,
-            page: this.page,
-            totalCategories: this.totalCategories,
-            categories: this.categories,
-          });
+      .subscribe({
+        next: (categoriesResponse) => {
+          console.log(categoriesResponse);
         }
-      )
+      })
   }
 
   public getNextCategories () {
@@ -51,9 +45,30 @@ export class ListPageComponent implements OnInit {
   }
 
   public getPreviusCategories () {
-    if (this.previusPage !== null) {
+    if (this.categoryService.currentPreviusPage !== null) {
       this.page -= 1;
       this.getCategories();
+    }
+  }
+
+  public onDelete(categoryId: string): void {
+    this.categoryService.deleteCategory(categoryId)
+      .subscribe({
+        next: (category) => {
+          this.showMessage((category.name + ' Deleted'), 'success')
+          this.getCategories();
+        }
+      });
+  }
+
+  showMessage(message: string, type: string) {
+    switch (type) {
+      case 'success':
+        return this.toastService.success('Success!', message);
+      case 'error':
+        return this.toastService.error('Error!', message);
+      default:
+        return;
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject, Subscription, debounceTime } from 'rxjs';
+import { CategoryService } from '../../../core/categories/services/category.service';
 
 @Component({
   selector: 'shared-app-search-by',
@@ -13,6 +14,10 @@ export class SearchByComponent implements OnInit, OnDestroy {
   private debouncer: Subject<string> = new Subject<string>();
   private deboucerSuscription?: Subscription;
 
+  constructor (
+    private categoryService: CategoryService
+  ) {}
+
   onSearchBy(value: string) {
     this.debouncer.next(value);
   }
@@ -24,7 +29,13 @@ export class SearchByComponent implements OnInit, OnDestroy {
     )
     .subscribe(
       value => {
-        console.log({value});
+        //console.log({value});
+        this.categoryService.getCategoryByName(value)
+          .subscribe({
+            next: (categories) => {
+              console.log(categories)
+            }
+          })
       }
     )
   }

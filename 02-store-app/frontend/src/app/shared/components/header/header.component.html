@@ -19,7 +19,7 @@
       <div class="col-lg-6 col-sm-12 mx-auto text-center">
         <!-- <input type="text" name="" id="" class="form-control" placeholder="Search by product name or by category" #txtName
           (click)="onSearch(txtName.value)"> -->
-          <select name="" id="" class="form-control">
+          <select name="" id="" class="form-control" (change)="onChange($event)">
             <option value="" selected>--Select User--</option>
             <option [value]="user.id" *ngFor="let user of users">{{user.name}}</option>
           </select>
@@ -47,12 +47,6 @@
   <nav class="nav-BAR">
       <ul>
           <li>
-              <a class="cursor-pointer" routerLink="/users">
-                <i class="bi bi-person-gear"></i>
-                Users
-              </a>
-          </li>
-          <li>
             <a class="cursor-pointer" routerLink="/products">
               <i class="bi bi-person-gear"></i>
               Products
@@ -65,7 +59,7 @@
               </a>
           </li>
           <li>
-              <a class="cursor-pointer" routerLink="/orders">
+              <a class="cursor-pointer" (click)="onViewUserOrders()">
                 <i class="bi bi-card-checklist"></i>
                 Orders
               </a>

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Product } from '../../products/interfaces/product.interface';
-import { ProductItemCart } from '../interfaces/cart.interfaces';
+import { CartItemList, ProductItemCart } from '../interfaces/cart.interfaces';
+import { devEnvironments } from '../../../environments/environments.dev';
+import { HttpClient } from '@angular/common/http';
+import { Order } from '../interfaces/orders.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,19 +12,17 @@ import { ProductItemCart } from '../interfaces/cart.interfaces';
 export class CartService {
   public products: ProductItemCart[] = []; // ESTE SOLO MANTIENE LA INFORMACION EN EL CARRITO PERO NO ESTA A LA ESCUCHA ESE ES EL PROBLEMA POR ESO NO PUEDO ACCEDER AL VALOR ACTUAL
   public productList = new BehaviorSubject<ProductItemCart[]>([]); // EN ONINIT ESTE SE SUBSCRIBE CADA VEZ QUE SE ANEXA UN ITEM AL CARRITO MUY UTIL
+  private apiUrl: string = devEnvironments.apiUrl;
 
-  constructor() { 
+  constructor(
+    private httpClient: HttpClient
+  ) { 
     this.getDataFromLocalStorage();
   }
 
   public getProducts() {
     return this.productList.asObservable();
   }
-
-  // public setProduct (product: Product) {
-  //   this.products = [...this.products, product];
-  //   this.productList.next(product);
-  // }
 
   public addToCard (product: Product, quantity: number) {
     const existsProduct = this.products.find(p => p.id === product.id);
@@ -38,8 +39,6 @@ export class CartService {
       };
       this.products = [...this.products, newProduct];
       this.productList.next(this.products);
-      // this.getTotalPrice();
-      // console.log({products: this.products, productsObservable: this.productList});
       this.setDataFromLocalStorage();
     }
   }
@@ -76,5 +75,20 @@ export class CartService {
     if (!JSON.parse(localStorage.getItem('products')!)) return;
     this.products = JSON.parse(localStorage.getItem('products')!);
     this.productList.next(this.products);
+  }
+
+  public createOrder(cartItemList: CartItemList): Observable<any> {
+    return this.httpClient.post<any>(`${this.apiUrl}/orders`, cartItemList)
+      .pipe(
+        tap(
+          order => {
+            this.cleanCart();
+          }
+        )
+      );
+  }
+
+  public getOrders(userId: string): Observable<Order> {
+    return this.httpClient.get<Order>(`${this.apiUrl}/orders/user/${userId}`, {});
   }
 }

@@ -13,7 +13,7 @@ export class CategoryRoutes {
     router 
       .get('', categoryController.getAll)
       .get('/:categoryId', categoryController.getOne)
-      .get('/search-by', categoryController.getByName)
+      .get('/search/by', categoryController.getByName)
       .post('', categoryController.createOne)
       .put('/:categoryId', categoryController.editOne)
       .delete('/:categoryId', categoryController.deleteOne);
